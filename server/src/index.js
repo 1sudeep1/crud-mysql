@@ -10,21 +10,13 @@ require('dotenv').config()
 
 const port = 4000
 
-//importing database
-const con = require('./database/connection')
 
 // to parse req.body to plain object/json
 app.use(express.json())
 
 //importing userRoutes
 const userRoutes = require('./routes/userRoutes')
-con.connect((err) => {
-    if (err) {
-        console.error('Database connection failed:', err);
-        return;
-    }
-    console.log('Connected to database');
-});
+
 
 //using routes
 app.use(userRoutes)
