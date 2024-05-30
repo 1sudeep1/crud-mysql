@@ -3,7 +3,13 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 const Register = () => {
+  const router= useRouter()
+  const notify = (msg) => toast(msg);
   const [passwordSeen, setPasswordSeen] = useState(false)
   const [conifrmPasswordSeen, setconfirmPasswordSeen] = useState(false)
   const handlePassword = () => {
@@ -39,12 +45,30 @@ const Register = () => {
     validationSchema: registerSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log(values)
+        await handleSave(values)
+        resetForm()
       } catch (err) {
         console.error('Error submitting form:', err);
       }
     }
   })
+
+  const handleSave = async (inputItems) => {
+    try {
+      const result = await axios.post(`http://localhost:4000/register`, inputItems)
+      const data = await result.data
+      console.log(data)
+      if (result.status === 201) {
+        notify(data)
+        router.push('/')
+      }
+    } catch (err) {
+      if (err.response.status === 400) {
+        notify(err.response.data)
+      }
+      throw err;
+    }
+  }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-auto lg:py-10">

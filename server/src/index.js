@@ -6,6 +6,9 @@ const cors = require('cors')
 
 const app = express()
 
+//using cors
+app.use(cors())
+
 require('dotenv').config()
 
 const port = 4000
@@ -20,9 +23,6 @@ const userRoutes = require('./routes/userRoutes')
 
 //using routes
 app.use(userRoutes)
-
-//using cors
-app.use(cors)
 
 app.listen(port || 4000, () => {
     console.log(`Example app listening on port ${port}`)
