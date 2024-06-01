@@ -1,16 +1,14 @@
 const bcrypt = require('bcrypt')
-const saltRounds = 10;
+const saltRounds = 8;
 const jwt = require('jsonwebtoken')
 const con = require('../database/connection')
 const registerUser = async (req, res) => {
-    console.log(req.body)
     const { fullName, email, gender, password, isAcceptTerms } = req.body;
 
     try {
         // Check if the email already exists
         const checkEmailQuery = 'SELECT * FROM users WHERE Email=?';
         const [results] = await con.promise().query(checkEmailQuery, [email]);
-        console.log(results.length)
         if (results.length > 0) {
             return res.status(400).send('Email already registered');
         }
@@ -29,30 +27,30 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         const [results] = await con.promise().query('SELECT * FROM users WHERE Email = ?', [email]);
 
         if (results.length === 0) {
-            return res.status(400).send('User not found');
+            return res.status(400).json({ msg: 'User not found' });
         }
 
         const user = results[0];
         const isPasswordValid = await bcrypt.compare(password, user.Password);
-
-        if (!isPasswordValid) {
-            return res.status(401).send('Invalid password');
+        if (isPasswordValid) {
+            const token = jwt.sign(
+                { id: user.ID, email: user.Email },
+                process.env.SECRET_KEY,
+                { expiresIn: '24h' }  // 24 hours
+            );
+            return res.status(200).json({ msg: 'Login successful', token, user });
+        } else {
+            return res.status(401).json({ msg: 'Invalid password' });
         }
 
-        const token = jwt.sign({ id: user.ID, email: user.Email }, process.env.SECRET_KEY, { expiresIn: 86400 });
-        res.status(200).send({ msg: 'Login successful', token });
     } catch (err) {
         console.error('Database query error:', err);
-        res.status(500).send('Server error');
+        return res.status(500).json({ msg: 'Server error' });
     }
 };
 
 module.exports = { registerUser, loginUser };
-
-
-module.exports = { registerUser, loginUser }

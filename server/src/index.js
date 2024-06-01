@@ -11,7 +11,7 @@ app.use(cors())
 
 require('dotenv').config()
 
-const port = 4000
+const port = process.env.PORT;
 
 
 // to parse req.body to plain object/json

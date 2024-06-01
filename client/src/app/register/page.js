@@ -56,12 +56,12 @@ const Register = () => {
 
   const handleSave = async (inputItems) => {
     try {
-      const result = await axios.post(`http://localhost:4000/register`, inputItems)
+      const result = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, inputItems)
       const data = await result.data
       console.log(data)
       if (result.status === 201) {
         notify(data)
-        router.push('/')
+        router.push('/login')
       }
     } catch (err) {
       if (err.response.status === 400) {
