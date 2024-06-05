@@ -58,7 +58,6 @@ const Register = () => {
     try {
       const result = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, inputItems)
       const data = await result.data
-      console.log(data)
       if (result.status === 201) {
         notify(data)
         router.push('/login')

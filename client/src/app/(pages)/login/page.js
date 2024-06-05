@@ -51,8 +51,6 @@ const Login = () => {
     try {
       const result = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, inputItems)
       const data = await result.data;
-      console.log(data, 'sudeep')
-      console.log(inputItems.rememberMe)
       if (result.status === 200) {
         notify(data.msg)
         router.push('/')
