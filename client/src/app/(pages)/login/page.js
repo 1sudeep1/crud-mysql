@@ -8,8 +8,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { setUserLoginDetails } from '@/app/redux/reducerSlices/userSlice';
 
 const Login = () => {
+  const dispath = useDispatch()
   const router = useRouter()
   const notify = (msg) => toast(msg);
   const [passwordSeen, setPasswordSeen] = useState(false)
@@ -53,11 +56,14 @@ const Login = () => {
       if (result.status === 200) {
         notify(data.msg)
         router.push('/')
-        if (inputItems.rememberMe) {
-          localStorage.setItem('user', JSON.stringify({name: data.user.Name, email: data.user.Email, gender:data.user.Gender }));
-        } else {
-          sessionStorage.setItem('user', JSON.stringify({name: data.user.Name, email: data.user.Email, gender:data.user.Gender }));
+        if(inputItems.rememberMe){
+          dispath(setUserLoginDetails(data))
         }
+        // if (inputItems.rememberMe) {
+        //   localStorage.setItem('user', JSON.stringify({name: data.user.Name, email: data.user.Email, gender:data.user.Gender }));
+        // } else {
+        //   sessionStorage.setItem('user', JSON.stringify({name: data.user.Name, email: data.user.Email, gender:data.user.Gender }));
+        // }
       }
     } catch (err) {
       console.log(err)
