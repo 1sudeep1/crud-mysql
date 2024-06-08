@@ -17,11 +17,17 @@ export const userSlice = createSlice({
                 token: action.payload.token,
                 isLoggedIn: true
             }
+        },
+        
+        setSignOut: (state, action) => {
+            return {
+                ...initialState
+            }
         }
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { setUserLoginDetails } = userSlice.actions
+export const { setUserLoginDetails, setSignOut } = userSlice.actions
 
 export default userSlice.reducer
