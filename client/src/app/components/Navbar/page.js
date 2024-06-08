@@ -1,7 +1,14 @@
+'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
+import navData from './navData'
 
 const Navbar = () => {
+    const [activeItem, setActiveItem] = useState('Home')
+    const handleMenu = (menuItem) => {
+        setActiveItem(menuItem)
+    }
+    console.log(activeItem, 'suman')
     return (
         <header className="flex shadow-md py-4 px-4 sm:px-10 bg-white font-[sans-serif] min-h-[70px] tracking-wide relative z-50">
             <div className="flex flex-wrap items-center justify-between gap-5 w-full">
@@ -15,14 +22,20 @@ const Navbar = () => {
                         </svg>
                     </button>
                     <ul className="lg:flex gap-x-5 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
-                        <li className="mb-6 hidden max-lg:block">
+                        {/* <li className="mb-6 hidden max-lg:block">
                             <a href="javascript:void(0)"><img src="https://readymadeui.com/readymadeui.svg" alt="logo" className="w-36" />
                             </a>
-                        </li>
-                        <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3">
-                            <Link href="/" className="hover:text-[#007bff] text-[#007bff] block font-semibold text-[15px]">Home</Link>
-                        </li>
-                        <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3"><a href="javascript:void(0)" className="hover:text-[#007bff] text-gray-500 block font-semibold text-[15px]">Team</a>
+                        </li> */}
+                        {navData?.map((navItem, navId) => {
+                            return (
+                                <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3" key={navId}>
+                                    <Link href={navItem.href} onClick={() => handleMenu(navItem.navTitle)} className={`hover:text-[#007bff] ${activeItem === navItem.navTitle ? 'text-[#007bff]' : 'text-gray-500'} block font-semibold text-[15px]`}>{navItem.navTitle}</Link>
+                                </li>
+                            )
+                        })}
+
+
+                        {/* <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3"><a href="javascript:void(0)" className="hover:text-[#007bff] text-gray-500 block font-semibold text-[15px]">Team</a>
                         </li>
                         <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3"><a href="javascript:void(0)" className="hover:text-[#007bff] text-gray-500 block font-semibold text-[15px]">Feature</a>
                         </li>
@@ -31,7 +44,7 @@ const Navbar = () => {
                         <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3"><a href="javascript:void(0)" className="hover:text-[#007bff] text-gray-500 block font-semibold text-[15px]">About</a>
                         </li>
                         <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3"><a href="javascript:void(0)" className="hover:text-[#007bff] text-gray-500 block font-semibold text-[15px]">Contact</a>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <div className="flex max-lg:ml-auto space-x-3">
