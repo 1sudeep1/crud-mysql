@@ -57,8 +57,8 @@ const Navbar = () => {
                         })
                         :
                         <div className='flex items-center text-lg font-semibold gap-2'>
-                            <span className='text-sm text-gray-500'>Welcome,</span>
-                            <h1 className='text-gray-500'>{loggedInUser.userDetails.Name.split(" ")[0]}</h1>
+                            <span className={`text-sm text-gray-500  ${loggedInUser.isLoggedIn? 'inline-block' :'hidden'}`}>Welcome,</span>
+                            <h1 className='text-gray-500'>{loggedInUser?.userDetails?.Name?.split(" ")[0]}</h1>
                             <button onClick={handleSignOut} className="px-4 py-2 text-sm rounded-full font-bold text-white border-2 border-[#007bff] bg-[#007bff] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#007bff]">Sign out</button>
                         </div>
                     }

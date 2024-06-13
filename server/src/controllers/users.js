@@ -53,4 +53,15 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser };
+const getAllUsers = async (req, res) => {
+    try {
+        const getAllUserQuery = 'SELECT * FROM users';
+        const [allUsers] = await con.promise().query(getAllUserQuery);
+        res.status(200).json(allUsers);
+    } catch (err) {
+        console.error('Database query error:', err);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+};
+
+module.exports = { registerUser, loginUser, getAllUsers };
